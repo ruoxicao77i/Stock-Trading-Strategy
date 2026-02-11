@@ -45,7 +45,7 @@ All the data above can be found in the WRDS (Wharton Research Data Services)(htt
 
 We want to predict next-day stock price movement. Hence, we will use regression task (ex: Next_Day_Return = (Close_t+1 − Close_t) / Close_t) and classification task (ex: Direction = sign(Next_Day_Return)).
 
-### Baseline models:
+### Baseline models
 These models are easy to interpret and provide the benchmark for complex models.
 - Linear Regression (predict next-day return)
 - Logistic Regression (predict up or down movement)

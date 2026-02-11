@@ -41,7 +41,32 @@ Specific objectives include:
 
 All the data above can be found in the WRDS (Wharton Research Data Services)(https://wrds-www.wharton.upenn.edu/). It contains the OptionMetrics database, which is industrial-level historical option data. We can use the school email to register an account and download the data in CSV format. 
 
-### Data Visualization Plan
+## Modeling Plan
+
+We want to predict next-day stock price movement. Hence, we will use regression task (ex: Next_Day_Return = (Close_t+1 − Close_t) / Close_t) and classification task (ex: Direction = sign(Next_Day_Return)).
+
+### Baseline models:
+These models are easy to interpret and provide the benchmark for complex models.
+- Linear Regression (predict next-day return)
+- Logistic Regression (predict up or down movement)
+
+### Model evaluation
+For regression:
+- Mean Squared Error (MSE)
+- R^2 score
+
+For classification:
+- Accuracy
+- Precision and Recall
+
+### Simple trading strategy
+We might design a model to connect predictions with making the dicision to tell user whether can buy the stock. We will implement a simple rule-based strategy.
+- Buy when predicted return > 0
+- Hold cash otherwise
+We will compare this strategy with buy and hold using history data.
+
+
+## Data Visualization Plan
 We plan to use the following **tools** to visualize the data:
 
 - Matplotlib
@@ -53,4 +78,20 @@ We are thinking of using the following **charts** to visualize the data:
 - **Standard OHLC + Volume:** to show the Candlestick Chart and Volume Bars.
 - **Dual-Axis Line Chart:** to visualize the Stock Price and Implied Volatility. In this way, we can circle those moments when stock prices plummeted and IV skyrocketed.
 - **Correlation Heatmap:** Put your features (IV, Gamma, PCR, VIX) and target variable (Next_Day_Return) together to see the correlation between them.
+
+## Test Plan
+Because this project uses time-series financial data, we will split the dataset in timeline rather than randomly.
+
+For example:
+- Training data: first 80% of the timeline
+- Testing data: last 20% of the timeline
+This ensures that the model only uses past information to predict future stock.
+
+Model evaluation:
+- for regression: Mean Squared Error
+- for classification: Accuracy
+
+
+
+
 

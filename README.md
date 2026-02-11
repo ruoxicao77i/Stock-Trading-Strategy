@@ -65,7 +65,7 @@ Specific objectives include:
 - Interest Rates
 ### Data Source
 
-All the data above can be found in the WRDS (Wharton Research Data Services)(https://wrds-www.wharton.upenn.edu/). It contains the OptionMetrics database, which is industrial-level historical option data. We can use the school email to register an account and download the data in CSV format. 
+All the data above can be found in the WRDS (Wharton Research Data Services)(https://wrds-www.wharton.upenn.edu/). It contains the OptionMetrics database, which is industrial-level historical option data. If we cannot get the data from WRDS, we will use the data from Kaggle.
 
 ### Data Visualization Plan
 We plan to use the following **tools** to visualize the data:

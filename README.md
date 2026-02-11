@@ -85,6 +85,7 @@ Because this project uses time-series financial data, we will split the dataset 
 For example:
 - Training data: first 80% of the timeline 
 - Testing data: last 20% of the timeline 
+
 This ensures that the model only uses past information to predict future stock.
 
 Model evaluation:

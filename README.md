@@ -9,15 +9,15 @@ In terms of methodology, the project will utilize statistical analysis and machi
 
 <!-- ![timeline](./assets/timeline.png) -->
 
+
 | Stage | Activity | Estimated Duration | Start Date | End Date | Deliverable | Comments |
 |------|---------|-------------------|-----------|----------|-------------|----------|
-| Research design and planning | Finalize research problems/questions |  | 2026/2/2 |  | Confirmed research problem/questions |  |
+| Research design and planning | Finalize research problems/questions |  | 2026/2/2 | 2026/2/5 | Confirmed research problem/questions ｜ ｜
 |  | Develop research design |  |  |  | Draft research design section for final report |  |
 |  | Prepare research proposal |  |  | 2026/2/11 | Research proposal submission |  |
-| Literature review | Search, capture and synthesis relevant literature | 2 weeks | 2026/2/5 | 2026/2/20 |  |  |
-|  | Prepare literature review | 1.5 weeks | 2026/2/15 | 2026/2/28 | Draft literature review section for final report |  |
-| Data collection | Finalize sampling plan | 4 days | 2026/2/15 | 2026/2/18 | Sampling Plan |  |
-|  | Develop data collection instrument | 1 week | 2026/2/18 | 2026/2/25 | Draft data collection instrument |  |
+|Relative Info Searching|Background searching | 3 days | 2026/2/11 | 2026/2/14| Gain relative info && validate project feasibility
+| Data collection | Finalize sampling plan | 4 days | 2026/2/14 | 2026/2/18 | Sampling Plan |  |
+|  | Implement data preprocessing and pipeline | 1 week | 2026/2/18 | 2026/2/25 | Draft data collection instrument |  |
 |  | Carry out data collection | 1.5 weeks | 2026/2/25 | 2026/3/8 | Raw data |  |
 |  | Write up data collection | 5 days | 2026/3/5 | 2026/3/10 | Draft data collection for final report |  |
 | Data analysis | Prepare data for analysis (Data cleaning, feature extraction) | 1 week | 2026/3/8 | 2026/3/15 | Data ready for analysis |  |

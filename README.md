@@ -33,12 +33,13 @@ In terms of methodology, the project will utilize statistical analysis and machi
 
 ## Clear goals
 
-The primary objective of this project is to utilize stock price trends from the previous trading day and option market data to successfully predict stock price movements for the next trading day, and to construct a trading model that outperforms the buy-and-hold strategy in historical backtesting.
+The primary objective of this project is to utilize the previous day's stock price trend and option market data to predict the stock price volatility for the following day, and to devise a trading strategy that outperforms the buy-and-hold benchmark strategy in historical backtesting, while explicitly considering risk.
+In the initial stage, we will primarily focus on a smaller and clearly defined market, consisting of a widely covered market index ETF (such as SPY or QQQ) and a limited number of large individual stocks (such as TSLA, NVDA, AAPL) for which option chain data is available. If data is available, we will expand the stock range to up to 10 companies.
 Specific objectives include:
-1. Construct a feature system encompassing stock trading data and options market indicators;
-2. Train a predictive model to determine the trend or magnitude of stock price changes on the next trading day;
-3. Design an executable trading strategy based on the prediction results;
-4. Through historical backtesting, compare the performance of this strategy in terms of return and risk with that of the buy-and-hold strategy to verify its effectiveness.
+Develop a functional system that integrates stock trading data with options market indicators, such as implied volatility, trading volume, open interest, and signals related to put and call options.
+2. Train a predictive model to estimate the direction and/or magnitude of stock returns for the next day.
+3. Design an executable trading strategy based on the model output and incorporate risk control measures, such as filtering based on volatility, return thresholds, or position size control, to avoid high-variance trading.
+4. The strategy was evaluated through historical backtesting, and compared with the buy-and-hold strategy using indicators based on return and risk adjustment, such as cumulative return, volatility, maximum drawdown, and Sharpe ratio.
 
 ## Data Collection
 

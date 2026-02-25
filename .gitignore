@@ -1,0 +1,6 @@
+# Large data files
+*.csv
+*.json
+
+# Large directories
+data sets/

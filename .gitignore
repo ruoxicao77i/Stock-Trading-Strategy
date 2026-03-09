@@ -3,4 +3,4 @@
 *.json
 
 # Large directories
-data sets/
+datasets/

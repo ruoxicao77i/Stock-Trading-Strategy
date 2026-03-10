@@ -9,12 +9,14 @@ import os
 
 #-------設定的地方-------
 TICKERS = [
-    "NVDA",
-    "TSLA"
+    "AAPL",
+    "GOOG",
+    "MSFT",
+    "SPY"
 ]
 
-START_DATE = "2019-05-01"
-END_DATE = "2022-10-17"
+START_DATE = "2015-01-01"
+END_DATE = "2025-01-01"
 INTERVAL = "1d"
 SAVE_DIR = "../data/raw"
 #-------設定的地方-------

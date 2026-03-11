@@ -15,10 +15,10 @@ TICKERS = [
     "SPY"
 ]
 
-START_DATE = "2015-01-01"
+START_DATE = "2020-01-01"
 END_DATE = "2025-01-01"
 INTERVAL = "1d"
-SAVE_DIR = "../data/raw"
+SAVE_DIR = "data/raw"
 #-------設定的地方-------
 
 

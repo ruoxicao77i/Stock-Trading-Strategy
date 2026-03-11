@@ -47,6 +47,8 @@ INTERVAL = "1d"
 
 # Directory to store downloaded CSV files
 SAVE_DIR = "../data/raw"
+#-------設定的地方-------
+
 
 
 def download_stock(ticker, start_date, end_date, interval):

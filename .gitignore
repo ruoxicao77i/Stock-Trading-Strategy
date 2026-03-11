@@ -1,1 +1,8 @@
+# Large data files
+*.csv
+*.json
+
+# Large directories
+datasets/
+
 .venv/

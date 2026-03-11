@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import os
+import pandas_market_calendars as mcal
 
 """
 Stock Data Cleaning & Feature Engineering
@@ -63,6 +64,10 @@ def load_and_clean_stock(filepath):
     numeric_cols = ["Close", "High", "Low", "Open", "Volume"]
     df[numeric_cols] = df[numeric_cols].apply(pd.to_numeric)
 
+    print(df.isna().sum())
+    df[numeric_cols] = df[numeric_cols].ffill()
+    df["Volume"] = df["Volume"].fillna(0)
+    
     # Sort rows by date to ensure chronological order
     df = df.sort_values("Date")
 

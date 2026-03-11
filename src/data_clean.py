@@ -68,6 +68,18 @@ def load_and_clean_stock(filepath):
     df[numeric_cols] = df[numeric_cols].ffill()
     df["Volume"] = df["Volume"].fillna(0)
     
+    nyse = mcal.get_calendar("NYSE")
+
+    schedule = nyse.schedule(
+        start_date=df.index.min(),
+        end_date=df.index.max()
+    )
+
+    trading_days = schedule.index
+
+    missing = trading_days.difference(df.index)
+    print(missing)
+
     # Sort rows by date to ensure chronological order
     df = df.sort_values("Date")
 

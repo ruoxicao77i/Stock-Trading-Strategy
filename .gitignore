@@ -4,3 +4,5 @@
 
 # Large directories
 datasets/
+
+.venv/

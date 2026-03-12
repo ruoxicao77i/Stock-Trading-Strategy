@@ -1,40 +1,111 @@
 import pandas as pd
 import numpy as np
 import os
+import pandas_market_calendars as mcal
 
-RAW_DIR = "data/raw"
-CLEAN_DIR = "data/clean"
+"""
+Stock Data Cleaning & Feature Engineering
 
-TICKERS = ["AAPL", "GOOG", "MSFT"]
+This script loads raw stock data downloaded from Yahoo Finance,
+cleans the data, and generates additional financial features.
 
+Pipeline:
+    1. Raw CSV files (data/raw)
+    2. Data cleaning & feature engineering
+    3. Cleaned dataset (data/clean)
+
+Generated features include:
+    - Daily stock return
+    - Market return (SPY)
+    - Excess return
+    - 30-day rolling correlation with the market
+    - 30-day rolling beta
+"""
+
+
+# ==============================
+# Directory Configuration
+# ==============================
+
+RAW_DIR = "../data/raw"
+CLEAN_DIR = "../data/clean"
+TICKERS = ["AAPL", "GOOG", "MSFT", "TSLA", "NVDA", "QQQ"]
 
 def load_and_clean_stock(filepath):
+    """
+    Load a raw stock CSV file and perform basic cleaning.
 
+    Steps:
+    1. Remove incorrect first row (Yahoo Finance artifact)
+    2. Convert Date column to datetime
+    3. Convert numeric columns to numeric types
+    4. Sort data by date
+    5. Compute daily return
+
+    Parameters
+    ----------
+    filepath : str
+        Path to the raw stock CSV file
+
+    Returns
+    -------
+    pandas.DataFrame
+        Cleaned stock data with daily return
+    """
     df = pd.read_csv(filepath)
 
-    # 删除第一行错误数据
+    # Remove the first row (sometimes contains metadata or invalid values)
     df = df.iloc[1:]
 
-    # 日期转换
+    # Convert Date column to datetime format
     df["Date"] = pd.to_datetime(df["Date"])
 
-    # 数值列转换
+    # Convert price and volume columns to numeric values
     numeric_cols = ["Close", "High", "Low", "Open", "Volume"]
     df[numeric_cols] = df[numeric_cols].apply(pd.to_numeric)
 
-    # 排序
+    print(df.isna().sum())
+    df[numeric_cols] = df[numeric_cols].ffill()
+    df["Volume"] = df["Volume"].fillna(0)
+    
+    nyse = mcal.get_calendar("NYSE")
+
+    schedule = nyse.schedule(
+        start_date=df.index.min(),
+        end_date=df.index.max()
+    )
+
+    trading_days = schedule.index
+
+    missing = trading_days.difference(df.index)
+    print(missing)
+
+    # Sort rows by date to ensure chronological order
     df = df.sort_values("Date")
 
-    # 计算收益率
+    # Compute daily stock return (计算收益率)
+    # Return_t = (Price_t - Price_t-1) / Price_t-1
     df["Return"] = df["Close"].pct_change()
 
     return df
 
 
 def load_spy():
+    """
+    Load SPY (S&P 500 ETF) data and compute market return.
 
+    SPY is used as the market benchmark.
+
+    Returns
+    -------
+    pandas.DataFrame
+        Dataframe containing:
+        - Date
+        - Market_Return
+    """
     spy = pd.read_csv(f"{RAW_DIR}/SPY.csv")
 
+    # Remove first invalid row
     spy = spy.iloc[1:]
 
     spy["Date"] = pd.to_datetime(spy["Date"])

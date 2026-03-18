@@ -29,13 +29,22 @@ You can modify the following parameters:
 # QQQ (NASDAQ-100 ETF) | SPY (S&P500 ETF)
 
 TICKERS = [
-    "AAPL",
-    "GOOG",
-    "MSFT",
-    "TSLA",
-    "NVDA",
-    "QQQ",
-    "SPY"
+    # Tech
+    "AAPL", "MSFT", "GOOG", "NVDA", "QQQ","XLK",
+
+    # Financial
+    "JPM", "BAC", "GS", "XLF",
+
+    # Healthcare
+    "JNJ", "PFE", "UNH", "XLV",
+
+    # Energy
+    "XOM", "CVX", "XLE",
+
+    # Consumer
+    "AMZN", "TSLA", "HD", "XLY",
+    
+     "SPY"
 ]
 
 # Time range of historical data

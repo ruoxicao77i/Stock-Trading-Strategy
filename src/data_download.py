@@ -55,7 +55,7 @@ END_DATE = "2025-01-01"
 INTERVAL = "1d"
 
 # Directory to store downloaded CSV files
-SAVE_DIR = "../data/raw"
+SAVE_DIR = "data/raw"
 #-------設定的地方-------
 
 

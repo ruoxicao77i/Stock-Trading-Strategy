@@ -3,7 +3,7 @@ import numpy as np
 import os
 
 # ✅ 所有数据统一来源
-RAW_DIR = "data_new/raw"
+RAW_DIR = "data/raw"
 
 CLEAN_DIR = "data/clean"
 

@@ -1,0 +1,12 @@
+pandas
+numpy
+yfinance
+scikit-learn
+xgboost
+transformers
+torch
+requests
+plotly
+jupyter
+nbconvert
+pytest

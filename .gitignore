@@ -6,3 +6,4 @@
 datasets/
 
 .venv/
+.DS_Store

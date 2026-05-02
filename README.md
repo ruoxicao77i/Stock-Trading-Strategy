@@ -1,125 +1,197 @@
-# Stock-Trading-Strategy
+# Stock Price Prediction & Trading Strategy
+## CS506 — Boston University
+>  Video Walkthrough: https://youtu.be/EZlN0NlRfQs
 
-## Project Description
+## Setup & How to Run
+To make our project easier to reproduce, we used a Makefile to organize the main commands. This allows users to set up the environment, run the data pipeline, execute notebooks, and clean generated files with simple commands.
 
-The objective of this project is to construct a short-term stock price prediction model based on historical stock price data and options market data, aiming to forecast the stock price trend for the next trading day. This project will utilize stock trading information from the previous trading day, including opening price, closing price, highest price, lowest price, trading volume, etc., as well as options market-related data, such as implied volatility, options trading volume, put/call ratio, etc., as the main input features.
-In terms of methodology, the project will utilize statistical analysis and machine learning models to establish a correlation model between stock prices and option data, and predict the direction or magnitude of stock price changes on the next trading day. Based on the prediction results, corresponding trading strategies will be further designed, and historical data will be used to backtest their actual performance.
+The project requires Python 3.10 or later, and all dependencies are listed in requirements.txt.
+Users only need to run “make run” to execute the full main project pipeline.
 
-### Timeline
+Main commands:
+1. `make install`: creates the virtual environment and installs dependencies.
+2. `make download`: downloads historical stock and ETF data using yfinance.
+3. `make clean-data`: cleans the raw data and generates financial features.
+4. `make notebooks`: executes the project notebooks and saves the executed versions.
+5. `make run`: runs the main pipeline, including installation, data downloading, data cleaning, and  notebook execution.
+6. `make test`: runs the test suite using pytest.
+7. `make clean`: removes generated files, including the virtual environment, raw data, cleaned data, and executed notebooks.
 
-<!-- ![timeline](./assets/timeline.png) -->
+After running the pipeline, the raw data is stored in `data/raw/`, the cleaned data is stored in `data/clean/`, and the executed notebooks are saved in the `src/` directory.
 
+## Project Overview
 
-| Stage | Activity | Estimated Duration | Start Date | End Date | Deliverable | Comments |
-|------|---------|-------------------|-----------|----------|-------------|----------|
-| Research design and planning | Finalize research problems/questions |  | 2026/2/2 | 2026/2/5 | Confirmed research problem/questions ｜ ｜
-|  | Develop research design |  |  |  | Draft research design section for final report |  |
-|  | Prepare research proposal |  |  | 2026/2/11 | Research proposal submission |  |
-|Relative Info Searching|Background searching | 3 days | 2026/2/11 | 2026/2/14| Gain relative info && validate project feasibility
-| Data collection | Finalize sampling plan | 4 days | 2026/2/14 | 2026/2/18 | Sampling Plan |  |
-|  | Implement data preprocessing and pipeline | 1 week | 2026/2/18 | 2026/2/25 | Draft data collection instrument |  |
-|  | Carry out data collection | 1.5 weeks | 2026/2/25 | 2026/3/8 | Raw data |  |
-|  | Write up data collection | 5 days | 2026/3/5 | 2026/3/10 | Draft data collection for final report |  |
-| Data analysis | Prepare data for analysis (Data cleaning, feature extraction) | 1 week | 2026/3/8 | 2026/3/15 | Data ready for analysis |  |
-|  | Analyze data (Model training, data visualization) | 3 weeks | 2026/3/15 | 2026/4/5 | Outputs from analysis |  |
-| Check-in (March) |  |  |  |  |  |  |
-|  | Draw conclusions | 1 week | 2026/4/5 | 2026/4/12 | Draft data analysis and findings section for final report |  |
-| Finalizing & Writing up | Final draft of application | 2 weeks | 2026/4/10 | 2026/4/24 | Final draft |  |
-|  | Review draft | 1 week | 2026/4/20 | 2026/4/27 | Notes of feedback |  |
-|  | Final editing | 4 days | 2026/4/27 | 2026/5/1 | Final application |  |
-| Check-in (April) |  |  |  |  |  |  |
-| Presentation | Make presentations to the instructors |  | 2026/4/25 | 2026/5/1 | YouTube video summarizing the final report |  |
+This project aims to predict the next-day stock price direction, classifying whether a stock will go up or down. We use historical OHLCV stock data, market and sector information, and news sentiment features to build a machine learning prediction pipeline.
 
+Our dataset includes 14 major U.S. stocks across different sectors, combined with market benchmark data and FinBERT-based sentiment scores. The best tuned XGBoost model achieved 57.16% accuracy, which is higher than the 50% random baseline.
 
-## Clear goals
+Overall, the result suggests that combining financial indicators with sentiment information can provide useful signals for short-term stock movement prediction, although the task remains challenging due to market noise.
 
-The primary objective of this project is to utilize the previous day's stock price trend and option market data to predict the stock price volatility for the following day, and to devise a trading strategy that outperforms the buy-and-hold benchmark strategy in historical backtesting, while explicitly considering risk.
-In the initial stage, we will primarily focus on a smaller and clearly defined market, consisting of a widely covered market index ETF (such as SPY or QQQ) and a limited number of large individual stocks (such as TSLA, NVDA, AAPL) for which option chain data is available. If data is available, we will expand the stock range to up to 10 companies.
-Specific objectives include:
-Develop a functional system that integrates stock trading data with options market indicators, such as implied volatility, trading volume, open interest, and signals related to put and call options.
-2. Train a predictive model to estimate the direction and/or magnitude of stock returns for the next day.
-3. Design an executable trading strategy based on the model output and incorporate risk control measures, such as filtering based on volatility, return thresholds, or position size control, to avoid high-variance trading.
-4. The strategy was evaluated through historical backtesting, and compared with the buy-and-hold strategy using indicators based on return and risk adjustment, such as cumulative return, volatility, maximum drawdown, and Sharpe ratio.
+## Data
 
-## Data Collection
+### Data Sources
 
-### Features
+This project integrates multiple data sources to construct a comprehensive dataset for stock price prediction.
 
-**For this project, we wish to collect the stock information with following features:**
+- **Stock & Market data:** Yahoo Finance (yfinance) — historical daily OHLCV (Open, High, Low, Close, Volume) data for 14 stocks and ETF benchmarks, covering 2015-01-01 to 2025-01-01.
+- **News data:** Finnhub API — financial news headlines and summaries for each stock.
+- **Sentiment model:** FinBERT (ProsusAI/finbert) — transformer-based model for computing sentiment scores from news text.
 
-- Stock price (Bid, Ask, Close, Volume, Open_Interest)
-- Date
-- Strike_Price
-- Expiry_Date 
-- Call/Put_Flag
-- Greeks & IV
-- Implied_Volatility 
-- Delta 
-- Gamma 
-- Vega 
-- Theta 
+### Directory Structure
 
-**The data collected above is all about the stock data but not have the information about the market data such as the interest rate and the VIX. So we wish to also collect the following features:**
+```
+data/
+  raw/
+  clean/
+  news/
+  sentiment_cache/
+  master/
+```
 
-- Benchmark Indices
-- Volatility Indices
-- Interest Rates
-### Data Source
+### Data Pipeline
 
-All the data above can be found in the WRDS (Wharton Research Data Services)(https://wrds-www.wharton.upenn.edu/). It contains the OptionMetrics database, which is industrial-level historical option data. If we cannot get the data from WRDS, we will use the data from Kaggle.
+**Step A: Data Download (`src/data_download.py`)**
 
-## Modeling Plan
+Stock and ETF data are downloaded via `yf.download()` at daily frequency. Each ticker is saved as an individual CSV file under `data/raw/`. Assets covered:
 
-We want to predict next-day stock price movement. Hence, we will use regression task (ex: Next_Day_Return = (Close_t+1 − Close_t) / Close_t) and classification task (ex: Direction = sign(Next_Day_Return)).
+| Sector | Stocks | Sector ETF |
+|---|---|---|
+| Technology | AAPL, MSFT, GOOG, NVDA | XLK |
+| Financial | JPM, BAC, GS | XLF |
+| Healthcare | JNJ, PFE, UNH | XLV |
+| Energy | XOM, CVX | XLE |
+| Consumer | AMZN, TSLA, HD | XLY |
+| Market Benchmark | SPY, QQQ | — |
 
-### Baseline models
-These models are easy to interpret and provide the benchmark for complex models.
-- Linear Regression (predict next-day return)
-- Logistic Regression (predict up or down movement)
+**Step B: Feature Engineering (`src/data_clean.py`)**
 
-### Model evaluation
-For regression:
-- Mean Squared Error (MSE)
-- R^2 score
+Raw price data is transformed into economically meaningful indicators. The pipeline merges stock data with SPY and sector ETF data, then computes all relative features. Final output is saved under `data/clean/`.
 
-For classification:
-- Accuracy
-- Precision and Recall
+- **Daily Return & Excess Return:** Daily return is the percentage change in closing price. Excess return is defined as stock return minus the market return (SPY) and also relative to the corresponding sector ETF. The chart below (AAPL as example) shows that individual stocks can diverge substantially from the market over time, motivating the use of excess return as a feature.
 
-### Simple trading strategy
-We might design a model to connect predictions with making the dicision to tell user whether can buy the stock. We will implement a simple rule-based strategy.
-- Buy when predicted return > 0
-- Hold cash otherwise
-We will compare this strategy with buy and hold using history data.
+![Cumulative Returns: Stock vs. Market (AAPL)](assets/cumulative_returns.png)
 
+- **Rolling Correlation (30-day):** 30-day rolling correlation between the stock return and market/sector return, capturing dynamic co-movement patterns over time. The correlation is not constant — it dips sharply during periods of idiosyncratic events (e.g., early 2022, late 2024), which is why a rolling rather than static measure is used.
 
-## Data Visualization Plan
-We plan to use the following **tools** to visualize the data:
+![30-Day Rolling Correlation: AAPL vs. Market](assets/30_day_rolling_correlation.png)
 
-- Matplotlib
-- Seaborn
-- Plotly
+- **Rolling Beta (30-day):** Computed as rolling covariance between the stock and benchmark divided by benchmark variance, measuring systematic risk and sensitivity to market/sector movements.
 
-We are thinking of using the following **charts** to visualize the data:
+The heatmap below confirms that the return-based features (Return, Market_Return, Excess_Return) are largely independent of the rolling statistics (Corr_30, Beta_30) and volume, supporting the use of all feature groups together without high multicollinearity.
 
-- **Standard OHLC + Volume:** to show the Candlestick Chart and Volume Bars.
-- **Dual-Axis Line Chart:** to visualize the Stock Price and Implied Volatility. In this way, we can circle those moments when stock prices plummeted and IV skyrocketed.
-- **Correlation Heatmap:** Put your features (IV, Gamma, PCR, VIX) and target variable (Next_Day_Return) together to see the correlation between them.
+![Feature Correlation Heatmap](assets/feature_correlation_heatmap.png)
 
-## Test Plan
-Because this project uses time-series financial data, we will split the dataset in timeline rather than randomly.
+**Step C: Sentiment Integration (`src/model.ipynb`)**
 
-For example:
-- Training data: first 80% of the timeline 
-- Testing data: last 20% of the timeline 
+News for each stock is fetched from Finnhub, then processed by FinBERT to produce a sentiment score per article. Scores are aggregated daily (mean) and lagged by one trading day to form the `sentiment_score_lag1` feature used in modeling.
 
-This ensures that the model only uses past information to predict future stock.
+### Final Dataset
 
-Model evaluation:
-- for regression: Mean Squared Error
-- for classification: Accuracy
+The master dataset (`Final_Mega_Dataset.csv`) combines all features across 14 stocks:
 
+- **Price features:** Open, close, high, low prices, daily return, and trading volume — capturing short-term price dynamics and momentum.
+- **Market features:** SPY return, excess return vs. market, 30-day rolling correlation and beta with SPY — reflecting a stock's sensitivity to broad market movements.
+- **Sector features:** Sector ETF return, excess return vs. sector, 30-day rolling correlation and beta with sector ETF — capturing industry-specific effects and macroeconomic exposure.
+- **Sentiment features:** FinBERT-based sentiment score aggregated from daily news, lagged by one trading day.
 
+## Modeling Approach
+
+### Model
+
+**XGBoost binary classifier**
+
+XGBoost Binary Classifier is an implementation of the Gradient Boosted Decision Tree algorithm designed for binary classification tasks. It works by sequentially building an ensemble of decision trees where each new tree attempts to correct the residual errors made by the previous trees.
+
+### Train/Test Split
+
+We do 80/20 **chronological splitting** to the dataset. We cannot shuffle all the data and split it into two parts because stock prices are not independent and identically distributed. Today's price is heavily influenced by yesterday's price. If shuffling the data randomly, the model might peek into the future to predict the past.
+#### Features Used:
+The model utilizes three primary categories of features to predict stock price direction. All features are **lagged by one trading day** to ensure the model only uses historically available information to predict the next day's movement.
+##### **NLP Sentiment Features**
+- **sentiment_score_lag1**: The average sentiment score derived from news headlines and summaries using the **FinBERT** model, lagged by one day.
+##### **Market & Technical Indicators**
+- **Return_lag1**: The stock's return from the previous trading day.
+
+- **Volume_lag1**: Trading volume from the previous day.
+- **Market_Return_lag1**: The overall market return from the previous day.
+- **Excess_Return_lag1**: The stock's return relative to the market return from the previous day.
+- **Beta_30_lag1**: The 30-day rolling beta, indicating volatility relative to the market.
+- **Corr_30_lag1**: The 30-day rolling correlation between the stock and the market.
+##### Categorical Entity Features
+- **symbol_id**: A numerical identifier for each of the 14 processed stocks, generated via LabelEncoder.
+##### Target Variable
+- **label**: A binary classification where 1 indicates a positive stock return (x>0) and 0 indicates otherwise.
+
+**Hyperparameter Tuning:**
+To enhance performance, we conducted hyperparameter tuning using Grid Search combined with TimeSeriesSplit. This specific cross-validation technique is crucial for financial forecasting to prevent look-ahead bias. By optimizing parameters such as the learning rate and the number of estimators, we improved our cross-validation accuracy to 56.42%.
+
+**Best Parameters:**
+
+```
+max_depth=6
+learning_rate=0.05
+n_estimators=300
+subsample=0.9
+colsample_bytree=0.9
+```
+
+## Results
+
+### Model Accuracy
+
+Both models outperform the 50% random baseline. Hyperparameter tuning via GridSearchCV with TimeSeriesSplit yields a modest but consistent improvement.
+
+| Model | Test Accuracy | Macro Precision | Macro Recall | Macro F1 |
+|---|---|---|---|---|
+| Random Baseline | 50.00% | ~0.50 | ~0.50 | ~0.50 |
+| Baseline XGBoost | 56.25% | 0.56 | 0.56 | 0.55 |
+| Tuned XGBoost | 57.16% | 0.57 | 0.57 | 0.56 |
+| Best CV (Tuned) | 58.36% | — | — | — |
+
+![Model Accuracy Comparison](assets/accuracy.png)
+
+Both XGBoost models show notably higher recall for the "price up" class (label = 1) than for "price down" (label = 0). After tuning, recall on the positive class improves from 0.66 to 0.70, while recall on the negative class drops slightly from 0.45 to 0.43, suggesting the model is better at identifying upward movements. Overall accuracy and F1 improve marginally with tuning.
+
+### Feature Importance
+
+XGBoost's built-in importance ranks `sentiment_score_lag1` and `Market_Return_lag1` as the two most influential features, each contributing roughly 15% of the total split gain. The remaining features (`Corr_30_lag1`, `Excess_Return_lag1`, `Beta_30_lag1`, `Volume_lag1`, `Return_lag1`, `symbol_id`) are distributed fairly evenly in the 11–13% range, indicating no single market indicator dominates on its own.
+
+![Feature Importance](assets/feature_importance.png)
+
+### SHAP Analysis
+
+The SHAP beeswarm plot reveals the direction and magnitude of each feature's impact across all test samples. `sentiment_score_lag1` has the widest horizontal spread, confirming it is the most impactful feature — high sentiment scores (red dots) push predictions strongly toward "price up", while low scores (blue dots) push toward "price down". `Excess_Return_lag1` and `Market_Return_lag1` show a similar directional pattern but with tighter distributions.
+
+![SHAP Beeswarm](assets/beeswarm.png)
+
+The waterfall plot below breaks down a single prediction: for this sample, `Excess_Return_lag1` (−0.63) and `Return_lag1` (−0.41) are the dominant forces pushing the model toward "price down", while `sentiment_score_lag1` offers a small positive counter-signal (+0.05). The final output f(x) = −1.223 sits well below the base value of 0.168, resulting in a "price down" prediction.
+
+![SHAP Waterfall (Single Sample)](assets/waterfall.png)
+
+### Key Findings
+
+Sentiment is the most important single feature by both XGBoost split gain and SHAP spread, validating the hypothesis that news sentiment carries short-term predictive signal beyond price-based indicators. However, the overall accuracy of 57.16%, while meaningfully above the 50% random baseline, reflects the fundamental difficulty of next-day direction forecasting in noisy financial markets. The model is not overfit: test accuracy (57.16%) is close to the cross-validation score (56.42%), and the gap between baseline and tuned models is small, suggesting the data volume and feature set are the primary limiting factors rather than model configuration.
+
+## Tests & CI
+
+This project includes a small set of tests to check the most important parts of the data processing pipeline. The tests are written with pytest and focus on the preprocessing functions instead of the full machine learning model.
+
+The tests check:
+1. `load_and_clean()`: verifies that raw CSV files can be loaded and cleaned correctly.
+2. Return: checks that the daily return column is created correctly.
+3. `add_features()`: verifies that market and sector features are generated.
+
+Important generated features include `Excess_Return`, `Corr_30`, `Beta_30`, `Excess_Return_sector`, `Corr_30_sector`, and `Beta_30_sector`.
+
+We also use GitHub Actions for continuous integration. When code is pushed to GitHub or a pull request is opened, the workflow automatically sets up Python, installs dependencies, and runs pytest.
+
+## Team
+
+| Name      | UID |Email           |
+| --------- |----| --------------- |
+|Liang Yu Lin| U55834159|lin0326@bu.edu|
+| Ruoxi Cao | U76452880|ruoxicao@bu.edu |
+|Ying Huang |U13787608 |yinghy@bu.edu|
 
 
 

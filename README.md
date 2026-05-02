@@ -98,18 +98,18 @@ The master dataset (`Final_Mega_Dataset.csv`) combines all features across 14 st
 
 ### Model
 
-**XGBoost binary classifier**
+#### XGBoost binary classifier
 
 XGBoost Binary Classifier is an implementation of the Gradient Boosted Decision Tree algorithm designed for binary classification tasks. It works by sequentially building an ensemble of decision trees where each new tree attempts to correct the residual errors made by the previous trees.
 
 ### Train/Test Split
 
 We do 80/20 **chronological splitting** to the dataset. We cannot shuffle all the data and split it into two parts because stock prices are not independent and identically distributed. Today's price is heavily influenced by yesterday's price. If shuffling the data randomly, the model might peek into the future to predict the past.
-#### Features Used:
+### Features Used
 The model utilizes three primary categories of features to predict stock price direction. All features are **lagged by one trading day** to ensure the model only uses historically available information to predict the next day's movement.
-##### **NLP Sentiment Features**
+#### **NLP Sentiment Features**
 - **sentiment_score_lag1**: The average sentiment score derived from news headlines and summaries using the **FinBERT** model, lagged by one day.
-##### **Market & Technical Indicators**
+#### **Market & Technical Indicators**
 - **Return_lag1**: The stock's return from the previous trading day.
 
 - **Volume_lag1**: Trading volume from the previous day.
@@ -117,12 +117,12 @@ The model utilizes three primary categories of features to predict stock price d
 - **Excess_Return_lag1**: The stock's return relative to the market return from the previous day.
 - **Beta_30_lag1**: The 30-day rolling beta, indicating volatility relative to the market.
 - **Corr_30_lag1**: The 30-day rolling correlation between the stock and the market.
-##### Categorical Entity Features
+#### **Categorical Entity Features**
 - **symbol_id**: A numerical identifier for each of the 14 processed stocks, generated via LabelEncoder.
-##### Target Variable
+#### **Target Variable**
 - **label**: A binary classification where 1 indicates a positive stock return (x>0) and 0 indicates otherwise.
 
-**Hyperparameter Tuning:**
+### Hyperparameter Tuning
 To enhance performance, we conducted hyperparameter tuning using Grid Search combined with TimeSeriesSplit. This specific cross-validation technique is crucial for financial forecasting to prevent look-ahead bias. By optimizing parameters such as the learning rate and the number of estimators, we improved our cross-validation accuracy to 56.42%.
 
 **Best Parameters:**
@@ -192,6 +192,7 @@ We also use GitHub Actions for continuous integration. When code is pushed to Gi
 |Liang Yu Lin| U55834159|lin0326@bu.edu|
 | Ruoxi Cao | U76452880|ruoxicao@bu.edu |
 |Ying Huang |U13787608 |yinghy@bu.edu|
+|Xiju Jiang |u03732023 |jsquared@bu.edu|
 
 
 

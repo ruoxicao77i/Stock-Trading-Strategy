@@ -12,12 +12,15 @@ Main commands:
 1. `make install`: creates the virtual environment and installs dependencies.
 2. `make download`: downloads historical stock and ETF data using yfinance.
 3. `make clean-data`: cleans the raw data and generates financial features.
-4. `make notebooks`: executes the project notebooks and saves the executed versions.
-5. `make run`: runs the main pipeline, including installation, data downloading, data cleaning, and  notebook execution.
-6. `make test`: runs the test suite using pytest.
-7. `make clean`: removes generated files, including the virtual environment, raw data, cleaned data, and executed notebooks.
+4. `make prepare`: fetches news, runs FinBERT sentiment analysis, and builds the master feature dataset. Results are cached to `data/sentiment_cache/` and `data/master/`, so this step is skipped automatically on subsequent runs.
+5. `make notebooks`: executes the project notebooks and saves the executed versions.
+6. `make run`: runs the full pipeline (install → download → clean-data → prepare → notebooks).
+7. `make test`: runs the test suite using pytest.
+8. `make clean`: removes generated files, including the virtual environment, raw data, cleaned data, and executed notebooks.
 
-After running the pipeline, the raw data is stored in `data/raw/`, the cleaned data is stored in `data/clean/`, and the executed notebooks are saved in the `src/` directory.
+After running the pipeline, the raw data is stored in `data/raw/`, the cleaned data is stored in `data/clean/`, sentiment cache and the master dataset are stored in `data/sentiment_cache/` and `data/master/`, and the executed notebooks are saved in the `src/` directory.
+
+> **Note:** `make prepare` runs FinBERT in a separate process (`src/prepare_data.py`) before the model notebook. This prevents the FinBERT model from occupying memory during XGBoost training, which can cause kernel crashes on machines with limited RAM.
 
 ## Project Overview
 
@@ -81,9 +84,9 @@ The heatmap below confirms that the return-based features (Return, Market_Return
 
 ![Feature Correlation Heatmap](assets/feature_correlation_heatmap.png)
 
-**Step C: Sentiment Integration (`src/model.ipynb`)**
+**Step C: Sentiment Integration (`src/prepare_data.py`)**
 
-News for each stock is fetched from Finnhub, then processed by FinBERT to produce a sentiment score per article. Scores are aggregated daily (mean) and lagged by one trading day to form the `sentiment_score_lag1` feature used in modeling.
+News for each stock is fetched from Finnhub, then processed by FinBERT to produce a sentiment score per article. Scores are aggregated daily (mean) and lagged by one trading day to form the `sentiment_score_lag1` feature used in modeling. This step runs as a standalone script (`make prepare`) so that FinBERT is fully unloaded from memory before model training begins.
 
 ### Final Dataset
 

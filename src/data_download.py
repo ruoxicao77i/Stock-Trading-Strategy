@@ -48,8 +48,8 @@ TICKERS = [
 ]
 
 # Time range of historical data
-START_DATE = "2015-01-01"
-END_DATE = "2025-01-01"
+START_DATE = "2025-04-01"
+END_DATE = "2026-03-31"
 
 # Data interval
 INTERVAL = "1d"

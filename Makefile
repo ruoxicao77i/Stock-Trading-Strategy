@@ -11,27 +11,34 @@ PYTHON = python3
 VENV = .venv
 PIP = $(VENV)/bin/pip
 PY = $(VENV)/bin/python
+NBCONVERT = $(VENV)/bin/jupyter-nbconvert
 
-.PHONY: install download clean-data run notebooks test clean
+.PHONY: install download clean-data prepare run notebooks test clean
 
-install:
+$(VENV)/.installed: requirements.txt
 	$(PYTHON) -m venv $(VENV)
 	$(PIP) install --upgrade pip
 	$(PIP) install -r requirements.txt
+	$(PY) -m ipykernel install --sys-prefix --name cs506 --display-name "Python 3 (CS506)"
+	touch $@
 
-download:
+install: $(VENV)/.installed
+
+download: $(VENV)/.installed
 	$(PY) src/data_download.py
 
-clean-data:
+clean-data: $(VENV)/.installed
 	$(PY) src/data_clean.py
 
-run: install download clean-data notebooks
+prepare: $(VENV)/.installed
+	$(PY) src/prepare_data.py
 
-notebooks:
-	$(PIP) install jupyter nbconvert
-	$(PY) -m jupyter nbconvert --to notebook --execute src/data_testsearch.ipynb --output data_testsearch_executed.ipynb --output-dir src
-	$(PY) -m jupyter nbconvert --to notebook --execute src/data_visualization.ipynb --output data_visualization_executed.ipynb --output-dir src
-	$(PY) -m jupyter nbconvert --to notebook --execute src/model.ipynb --output model_executed.ipynb --output-dir src
+run: install download clean-data prepare notebooks
+
+notebooks: $(VENV)/.installed
+	$(NBCONVERT) --to notebook --execute --ExecutePreprocessor.kernel_name=cs506 src/data_testsearch.ipynb --output data_testsearch_executed.ipynb --output-dir src
+	$(NBCONVERT) --to notebook --execute --ExecutePreprocessor.kernel_name=cs506 src/data_visualization.ipynb --output data_visualization_executed.ipynb --output-dir src
+	$(NBCONVERT) --to notebook --execute --ExecutePreprocessor.kernel_name=cs506 src/model.ipynb --output model_executed.ipynb --output-dir src
 
 test:
 	$(PIP) install pytest

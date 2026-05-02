@@ -7,3 +7,5 @@ datasets/
 
 .venv/
 .DS_Store
+
+*_executed.ipynb

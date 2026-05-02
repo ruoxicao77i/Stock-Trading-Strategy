@@ -197,5 +197,12 @@ We also use GitHub Actions for continuous integration. When code is pushed to Gi
 |Ying Huang |U13787608 |yinghy@bu.edu|
 |Xiju Jiang |u03732023 |jsquared@bu.edu|
 
+## Notes
 
+During final reproducibility checks, we identified and fixed several issues. As a result, the current version has slightly lower accuracy than our original results.
+For reference, the original results can be found at:
+```
+git switch ca40896212eeb8918dfed40ef0840236a13a433a --detach
+```
+The current version prioritizes stable local compilation and execution, while the above commit preserves the original performance.
 

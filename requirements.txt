@@ -10,3 +10,7 @@ plotly
 jupyter
 nbconvert
 pytest
+matplotlib
+jupyter
+shap
+graphviz
